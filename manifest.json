@@ -1,6 +1,8 @@
 {
     "name": "Dynery",
     "short_name": "Dynery",
+    "start_url": "https://dynery.blogspot.com/",
+    "description": "Sürekli gelişen ve değişen teknoloji dünyasını takip edin, inceleyin ve keşfedin.",
     "icons": [
         {
             "src": "https://dynery.github.io/android-chrome-192x192.png",
