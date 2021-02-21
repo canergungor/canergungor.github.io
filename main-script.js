@@ -252,6 +252,83 @@
     return this;
   };
 })(jQuery);
+!(function (a) {
+  a.fn.menudynery = function () {
+    return this.each(function () {
+      var $t = a(this),
+        b = $t.find(".LinkList ul > li").children("a"),
+        c = b.length;
+      for (var i = 0; i < c; i++) {
+        var d = b.eq(i),
+          h = d.text();
+        if (h.charAt(0) !== "_") {
+          var e = b.eq(i + 1),
+            j = e.text();
+          if (j.charAt(0) === "_") {
+            var m = d.parent();
+            m.append('<ul class="sub-menu m-sub"/>');
+          }
+        }
+        if (h.charAt(0) === "_") {
+          d.text(h.replace("_", ""));
+          d.parent().appendTo(m.children(".sub-menu"));
+        }
+      }
+      for (var i = 0; i < c; i++) {
+        var f = b.eq(i),
+          k = f.text();
+        if (k.charAt(0) !== "_") {
+          var g = b.eq(i + 1),
+            l = g.text();
+          if (l.charAt(0) === "_") {
+            var n = f.parent();
+            n.append('<ul class="sub-menu2 m-sub"/>');
+          }
+        }
+        if (k.charAt(0) === "_") {
+          f.text(k.replace("_", ""));
+          f.parent().appendTo(n.children(".sub-menu2"));
+        }
+      }
+      $t.find(".LinkList ul li ul").parent("li").addClass("has-sub");
+    });
+  };
+})(jQuery);
+!(function (a) {
+  a.fn.lazydynery = function () {
+    return this.each(function () {
+      var t = a(this),
+        dImg = t.attr("data-image"),
+        iWid = Math.round(t.width()),
+        iHei = Math.round(t.height()),
+        iSiz = "w" + iWid + "-h" + iHei + "-p-k-no-nu",
+        img = "";
+      if (dImg.match("/s72-c")) {
+        img = dImg.replace("/s72-c", "/" + iSiz);
+      } else if (dImg.match("/w72-h")) {
+        img = dImg.replace("/w72-h72-p-k-no-nu", "/" + iSiz);
+      } else if (dImg.match("=w72-h")) {
+        img = dImg.replace("=w72-h72-p-k-no-nu", "=" + iSiz);
+      } else {
+        img = dImg;
+      }
+      a(window).on("load resize scroll", lazyOnScroll);
+      function lazyOnScroll() {
+        var wHeight = a(window).height(),
+          scrTop = a(window).scrollTop(),
+          offTop = t.offset().top;
+        if (scrTop + wHeight > offTop) {
+          var n = new Image();
+          (n.onload = function () {
+            t.attr("style", "background-image:url(" + this.src + ")").addClass("lazy-dynery");
+          }),
+            (n.src = img);
+        }
+      }
+      lazyOnScroll();
+    });
+  };
+})(jQuery);
 (function ($) {
   $.fn.replaceText = function (b, a, c) {
     return this.each(function () {
@@ -282,8 +359,25 @@
 function regxdynery(t) {
   return String(t.match(/[^{\}]+(?=})/g)).trim();
 }
+function msgError() {
+  return '<span class="no-posts"><strong>Hata:</strong> Sonuç bulunamadı.</span>';
+}
+function msgServerError() {
+  return '<div class="no-posts error-503"><h2>Haberler yüklenirken hata oluştu! Daha sonra tekrar ziyaret edin.</h2></div>';
+}
 function beforeLoader() {
   return '<div class="loader"/>';
+}
+function getFeedUrl(t, e, i) {
+  var o = "";
+  switch (i) {
+    case "comments":
+      o = "list" == t ? "/feeds/comments/default?alt=json&max-results=" + e : "/feeds/posts/default/-/" + i + "?alt=json&max-results=" + e;
+      break;
+    default:
+      o = "/feeds/posts/default/-/" + i + "?alt=json&max-results=" + e;
+  }
+  return o;
 }
 function getPostLink(t, e) {
   for (var i = 0; i < t[e].link.length; i++)
@@ -518,6 +612,45 @@ function getCustomStyle(t, e, i) {
   };
 })(jQuery),
   (function (t) {
+    t.fn.menudynery = function () {
+      return this.each(function () {
+        for (var e = t(this), i = e.find(".LinkList ul > li").children("a"), o = i.length, a = 0; a < o; a++) {
+          var n = i.eq(a),
+            s = n.text();
+          if (
+            "_" !== s.charAt(0) &&
+            "_" ===
+              i
+                .eq(a + 1)
+                .text()
+                .charAt(0)
+          ) {
+            var r = n.parent();
+            r.append('<ul class="sub-menu m-sub"/>');
+          }
+          "_" === s.charAt(0) && (n.text(s.replace("_", "")), n.parent().appendTo(r.children(".sub-menu")));
+        }
+        for (a = 0; a < o; a++) {
+          var d = i.eq(a),
+            c = d.text();
+          if (
+            "_" !== c.charAt(0) &&
+            "_" ===
+              i
+                .eq(a + 1)
+                .text()
+                .charAt(0)
+          ) {
+            var l = d.parent();
+            l.append('<ul class="sub-menu2 m-sub"/>');
+          }
+          "_" === c.charAt(0) && (d.text(c.replace("_", "")), d.parent().appendTo(l.children(".sub-menu2")));
+        }
+        e.find(".LinkList ul li ul").parent("li").addClass("has-sub");
+      });
+    };
+  })(jQuery),
+  (function (t) {
     t.fn.lazydynery = function () {
       return this.each(function () {
         var e = t(this),
@@ -565,9 +698,9 @@ function getCustomStyle(t, e, i) {
     t.attr("href", o), e.text(a);
   }),
   $(".avatar-image-container img").attr("src", function (t, e) {
-    return (e = e.replace("//dynery.github.io/blank.gif", "//1.bp.blogspot.com/-oSjP8F09qxo/Wy1J9dp7b0I/AAAAAAAACF0/ggcRfLCFQ9s2SSaeL9BFSE2wyTYzQaTyQCK4BGAYYCw/s35-r/avatar.jpg")).replace(
+    return (e = e.replace("//dynery.github.io/blank.gif", "//4.bp.blogspot.com/-oSjP8F09qxo/Wy1J9dp7b0I/AAAAAAAACF0/ggcRfLCFQ9s2SSaeL9BFSE2wyTYzQaTyQCK4BGAYYCw/s35-r/avatar.jpg")).replace(
       "//dynery.github.io/blank.gif",
-      "//1.bp.blogspot.com/-oSjP8F09qxo/Wy1J9dp7b0I/AAAAAAAACF0/ggcRfLCFQ9s2SSaeL9BFSE2wyTYzQaTyQCK4BGAYYCw/s35-r/avatar.jpg"
+      "//4.bp.blogspot.com/-oSjP8F09qxo/Wy1J9dp7b0I/AAAAAAAACF0/ggcRfLCFQ9s2SSaeL9BFSE2wyTYzQaTyQCK4BGAYYCw/s35-r/avatar.jpg"
     );
   }),
   $(".post-body a").each(function () {
