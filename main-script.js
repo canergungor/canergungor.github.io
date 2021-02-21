@@ -206,9 +206,6 @@ function getCustomStyle(t, i, e) {
           e < $("#footer-wrapper").offset().top - o && (e > a ? t.addClass("is-fixed") : 0 >= e && t.removeClass("is-fixed"), e > i ? t.removeClass("show") : t.addClass("show"), (i = $(document).scrollTop()));
         });
       }),
-      $("#main-wrapper,#sidebar-wrapper").each(function () {
-        $(this).theiaStickySidebar({ additionalMarginTop: 90, additionalMarginBottom: 30 });
-      }),
       $(".back-top").each(function () {
         var t = $(this);
         $(window).on("scroll", function () {
