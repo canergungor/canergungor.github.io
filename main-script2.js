@@ -132,18 +132,6 @@ function(e) {
     }), $(".mm-footer .mm-menu").each(function() {
         var e = $(this);
         $("#footer-menu ul.link-list").clone().appendTo(e)
-    }), $(".header-inner").each(function() {
-        var e = $(this);
-        if (1 == fixedMenu && e.length > 0) {
-            var t = $(document).scrollTop(),
-                o = e.offset().top,
-                i = e.height(),
-                a = o + i + i;
-            $(window).scroll(function() {
-                var i = $(document).scrollTop();
-                i > a ? e.addClass("is-fixed") : (i < o || i <= 1) && e.removeClass("is-fixed"), i > t ? e.removeClass("show") : e.addClass("show"), t = i
-            })
-        }
     }), $("#litespot-pro-load-more-link").each(function() {
         var e = $(this).data("load");
         e && $("#litespot-pro-load-more-link").show(), $("#litespot-pro-load-more-link").on("click", function(t) {
