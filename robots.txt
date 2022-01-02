@@ -1,5 +1,21 @@
 User-agent: Mediapartners-Google
-Disallow: / 
+Disallow: /
+Allow: /brands-dynery.ttf
+Allow: /brands-dynery.woff
+Allow: /brands-dynery.woff2
+Allow: /jquery.min.js
+Allow: /main-script2.js
+Allow: /solid-dynery.ttf
+Allow: /solid-dynery.woff
+Allow: /solid-dynery.woff2 
 
 User-agent: *
 Disallow: /
+Allow: /brands-dynery.ttf
+Allow: /brands-dynery.woff
+Allow: /brands-dynery.woff2
+Allow: /jquery.min.js
+Allow: /main-script2.js
+Allow: /solid-dynery.ttf
+Allow: /solid-dynery.woff
+Allow: /solid-dynery.woff2
